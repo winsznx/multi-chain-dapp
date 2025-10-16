@@ -4,18 +4,20 @@ import { Toaster } from 'react-hot-toast';
 
 export const Layout = () => {
   return (
-    <div className="min-h-screen bg-light dark:bg-dark transition-colors duration-300">
+    <div className="min-h-screen bg-white dark:bg-gray-950 transition-colors duration-300">
       <Header />
       
-      <main className="container-custom py-6 md:py-8">
-        <Outlet />
+      <main className="container-custom py-6 md:py-8 overflow-x-hidden">
+        <div className="w-full">
+          <Outlet />
+        </div>
       </main>
 
-      {/* Toast Notifications */}
       <Toaster
         position="top-right"
         toastOptions={{
           duration: 4000,
+          className: 'dark:bg-gray-900 dark:text-gray-100',
           style: {
             background: 'var(--toast-bg)',
             color: 'var(--toast-color)',
@@ -36,7 +38,6 @@ export const Layout = () => {
         }}
       />
 
-      {/* Custom CSS Variables for Toast */}
       <style>{`
         :root {
           --toast-bg: #ffffff;
@@ -44,9 +45,9 @@ export const Layout = () => {
           --toast-border: #e2e8f0;
         }
         .dark {
-          --toast-bg: #1e293b;
-          --toast-color: #f1f5f9;
-          --toast-border: #334155;
+          --toast-bg: #111827;
+          --toast-color: #f9fafb;
+          --toast-border: #374151;
         }
       `}</style>
     </div>

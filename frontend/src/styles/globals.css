@@ -1,26 +1,106 @@
-/* Test styles */
-body {
-  background-color: #f0f0f0;
-  font-family: system-ui, -apple-system, sans-serif;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    @apply bg-white text-gray-900 transition-colors duration-300;
+  }
+
+  body.dark {
+    @apply bg-gray-950 text-gray-100;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-gray-900;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-purple-500 rounded-full hover:bg-purple-600;
+  }
+
+  ::selection {
+    @apply bg-purple-500 text-white;
+  }
+}
+
 @layer components {
   .btn-primary {
-    background-color: #9333ea;
-    color: white;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 500;
+    @apply bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100 px-6 py-3 rounded-lg font-medium transition-all duration-200 border border-gray-200 dark:border-gray-700;
+  }
+
+  .btn-outline {
+    @apply border-2 border-purple-600 text-purple-600 dark:text-purple-400 hover:bg-purple-600 hover:text-white px-6 py-3 rounded-lg font-medium transition-all duration-200;
+  }
+
+  .btn-ghost {
+    @apply text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950 px-4 py-2 rounded-lg transition-all duration-200;
   }
 
   .card {
-    background-color: white;
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    @apply bg-white dark:bg-gray-900 rounded-xl shadow-md border border-gray-200 dark:border-gray-800 p-6 transition-all duration-200;
   }
+
+  .card-hover {
+    @apply card hover:shadow-lg hover:-translate-y-1 cursor-pointer;
+  }
+
+  .card-purple {
+    @apply card border-purple-500/20 bg-gradient-to-br from-white to-purple-50 dark:from-gray-900 dark:to-purple-950/20;
+  }
+
+  .input {
+    @apply w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+  }
+
+  .badge-purple {
+    @apply badge bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300;
+  }
+
+  .badge-success {
+    @apply badge bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300;
+  }
+
+  .badge-warning {
+    @apply badge bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-300;
+  }
+
+  .badge-error {
+    @apply badge bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent;
+  }
+}
+
+/* AppKit Styling */
+w3m-modal {
+  --w3m-accent: #9333ea !important;
+  --w3m-background: #ffffff !important;
+}
+
+body.dark w3m-modal {
+  --w3m-background: #030712 !important;
+  --w3m-color: #f9fafb !important;
 }

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useAccount, useBalance, useChainId } from 'wagmi';
 import { Link } from 'react-router-dom';
 import { 
@@ -5,24 +6,21 @@ import {
   Send, 
   FileCode, 
   History, 
-  TrendingUp, 
   ArrowRight,
   Zap,
   Shield,
   Activity
 } from 'lucide-react';
 import { getChainMetadata } from '@/config/chains';
+import { formatTokenAmount } from '@/utils/formatters';
 
 const QuickActionCard = ({ icon: Icon, title, description, to, color }) => (
-  <Link
-    to={to}
-    className="card-hover group"
-  >
+  <Link to={to} className="card-hover group">
     <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${color}`}>
       <Icon size={24} className="text-white" />
     </div>
     <h3 className="font-semibold text-lg mb-2">{title}</h3>
-    <p className="text-sm text-light-secondary dark:text-dark-secondary mb-4">
+    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
       {description}
     </p>
     <div className="flex items-center text-purple-600 dark:text-purple-400 group-hover:gap-2 transition-all">
@@ -32,18 +30,15 @@ const QuickActionCard = ({ icon: Icon, title, description, to, color }) => (
   </Link>
 );
 
-const StatCard = ({ label, value, icon: Icon, trend }) => (
+const StatCard = ({ label, value, icon: Icon, loading }) => (
   <div className="card">
     <div className="flex items-start justify-between">
       <div>
-        <p className="text-sm text-light-secondary dark:text-dark-secondary mb-1">
-          {label}
-        </p>
-        <p className="text-2xl font-bold">{value}</p>
-        {trend && (
-          <p className="text-sm text-green-600 dark:text-green-400 mt-1">
-            {trend}
-          </p>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{label}</p>
+        {loading ? (
+          <div className="animate-pulse h-8 w-24 bg-gray-200 dark:bg-gray-700 rounded"></div>
+        ) : (
+          <p className="text-2xl font-bold">{value}</p>
         )}
       </div>
       <div className="w-10 h-10 bg-purple-50 dark:bg-purple-950 rounded-lg flex items-center justify-center">
@@ -56,11 +51,19 @@ const StatCard = ({ label, value, icon: Icon, trend }) => (
 export default function Dashboard() {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
-  const { data: balance } = useBalance({
-    address: address,
+  const { data: balance, isLoading, refetch } = useBalance({ 
+    address,
+    chainId 
   });
-
   const currentChain = getChainMetadata(chainId);
+
+  // Refetch when chain changes
+  useEffect(() => {
+    if (address && chainId) {
+      console.log('Dashboard: Chain changed, refetching balance...');
+      refetch();
+    }
+  }, [chainId, address, refetch]);
 
   const quickActions = [
     {
@@ -97,11 +100,11 @@ export default function Dashboard() {
     return (
       <div className="min-h-[80vh] flex items-center justify-center">
         <div className="text-center max-w-md">
-          <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-purple-glow">
+          <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
             <Zap size={40} className="text-white" />
           </div>
           <h1 className="text-3xl font-bold mb-4">Welcome to ChainManager</h1>
-          <p className="text-light-secondary dark:text-dark-secondary mb-8">
+          <p className="text-gray-600 dark:text-gray-400 mb-8">
             Connect your wallet to start managing your multi-chain transactions, deployments, and more.
           </p>
           <div className="card-purple p-6">
@@ -119,16 +122,16 @@ export default function Dashboard() {
                 <FileCode size={16} className="text-purple-600 dark:text-purple-400 mt-1 flex-shrink-0" />
                 <span>Manage and verify smart contract deployments</span>
               </li>
-              <li className="flex items-start gap-2">
-                <TrendingUp size={16} className="text-purple-600 dark:text-purple-400 mt-1 flex-shrink-0" />
-                <span>View detailed analytics and reports</span>
-              </li>
             </ul>
           </div>
         </div>
       </div>
     );
   }
+
+  const balanceDisplay = balance 
+    ? `${formatTokenAmount(balance.formatted, 6)} ${balance.symbol}` 
+    : '0.00';
 
   return (
     <div className="space-y-8">
@@ -139,18 +142,18 @@ export default function Dashboard() {
             <h1 className="text-2xl md:text-3xl font-bold mb-2">
               Welcome back! 👋
             </h1>
-            <p className="text-light-secondary dark:text-dark-secondary">
+            <p className="text-gray-600 dark:text-gray-400">
               Connected to {currentChain?.name || 'Unknown Network'}
             </p>
           </div>
           <div className="flex items-center gap-3">
             <div className="text-right">
-              <p className="text-sm text-light-secondary dark:text-dark-secondary">
-                Your Balance
-              </p>
-              <p className="text-2xl font-bold">
-                {balance ? `${parseFloat(balance.formatted).toFixed(4)} ${balance.symbol}` : '0.00'}
-              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Your Balance</p>
+              {isLoading ? (
+                <div className="animate-pulse h-8 w-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              ) : (
+                <p className="text-2xl font-bold">{balanceDisplay}</p>
+              )}
             </div>
           </div>
         </div>
@@ -158,27 +161,15 @@ export default function Dashboard() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          label="Total Value"
-          value="$0.00"
-          icon={Wallet}
-          trend="+0%"
+        <StatCard 
+          label="Balance" 
+          value={balanceDisplay} 
+          icon={Wallet} 
+          loading={isLoading}
         />
-        <StatCard
-          label="Deployments"
-          value="0"
-          icon={FileCode}
-        />
-        <StatCard
-          label="Transactions"
-          value="0"
-          icon={Activity}
-        />
-        <StatCard
-          label="Networks"
-          value="6"
-          icon={TrendingUp}
-        />
+        <StatCard label="Deployments" value="0" icon={FileCode} />
+        <StatCard label="Transactions" value="0" icon={Activity} />
+        <StatCard label="Networks" value="6" icon={Zap} />
       </div>
 
       {/* Quick Actions */}
@@ -199,7 +190,7 @@ export default function Dashboard() {
             View All
           </Link>
         </div>
-        <div className="text-center py-12 text-light-secondary dark:text-dark-secondary">
+        <div className="text-center py-12 text-gray-600 dark:text-gray-400">
           <History size={48} className="mx-auto mb-4 opacity-50" />
           <p>No recent activity</p>
           <p className="text-sm mt-1">Your transactions will appear here</p>
