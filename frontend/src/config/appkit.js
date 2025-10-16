@@ -1,45 +1,36 @@
 import { createAppKit } from '@reown/appkit/react';
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
-import { allChains } from './chains';
+import { mainnet, polygon, bsc, arbitrum, optimism, base } from 'viem/chains';
 
-// Get project ID from environment
 const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID;
 
 if (!projectId) {
   throw new Error('VITE_WALLETCONNECT_PROJECT_ID is not set');
 }
 
-// App metadata
-export const metadata = {
+const metadata = {
   name: import.meta.env.VITE_APP_NAME || 'Multi-Chain DApp Manager',
-  description: import.meta.env.VITE_APP_DESCRIPTION || 'Manage all your on-chain transactions in one place',
+  description: import.meta.env.VITE_APP_DESCRIPTION || 'Manage all your on-chain transactions',
   url: import.meta.env.VITE_APP_URL || 'https://localhost:3000',
   icons: [import.meta.env.VITE_APP_ICON || 'https://localhost:3000/logo.png']
 };
 
-// Wagmi adapter
+const chains = [mainnet, polygon, bsc, arbitrum, optimism, base];
+
 export const wagmiAdapter = new WagmiAdapter({
   projectId,
-  networks: allChains
+  networks: chains
 });
 
-// Create AppKit instance
 export const appKit = createAppKit({
   adapters: [wagmiAdapter],
   projectId,
-  networks: allChains,
+  networks: chains,
   metadata,
   features: {
-    analytics: true,
-    email: true,
-    socials: ['google', 'github', 'apple'],
-    emailShowWallets: true,
+    analytics: false
   },
-  themeMode: 'light',
-  themeVariables: {
-    '--w3m-accent': '#9333ea',
-    '--w3m-border-radius-master': '8px',
-  }
+  themeMode: 'light'
 });
 
 export { projectId };
