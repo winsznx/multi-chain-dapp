@@ -1,0 +1,194 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-light text-light transition-colors duration-300;
+  }
+
+  body.dark {
+    @apply bg-dark text-dark;
+  }
+
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-light-secondary dark:bg-dark-secondary;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-purple-500 rounded-full hover:bg-purple-600;
+  }
+
+  /* Custom Selection */
+  ::selection {
+    @apply bg-purple-500 text-white;
+  }
+}
+
+@layer components {
+  /* Buttons */
+  .btn-primary {
+    @apply bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-md hover:shadow-purple-glow disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-light-secondary dark:bg-dark-secondary hover:bg-gray-200 dark:hover:bg-dark-700 text-light dark:text-dark px-6 py-3 rounded-lg font-medium transition-all duration-200 border border-light dark:border-dark;
+  }
+
+  .btn-outline {
+    @apply border-2 border-purple-600 text-purple-600 dark:text-purple-400 hover:bg-purple-600 hover:text-white px-6 py-3 rounded-lg font-medium transition-all duration-200;
+  }
+
+  .btn-ghost {
+    @apply text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950 px-4 py-2 rounded-lg transition-all duration-200;
+  }
+
+  /* Cards */
+  .card {
+    @apply bg-white dark:bg-dark-card rounded-xl shadow-md dark:shadow-dark-md border border-light dark:border-dark p-6 transition-all duration-200;
+  }
+
+  .card-hover {
+    @apply card hover:shadow-lg dark:hover:shadow-dark-lg hover:-translate-y-1 cursor-pointer;
+  }
+
+  .card-purple {
+    @apply card border-purple-500/20 bg-gradient-to-br from-white to-purple-50 dark:from-dark-card dark:to-purple-950/20;
+  }
+
+  /* Inputs */
+  .input {
+    @apply w-full px-4 py-3 rounded-lg border border-light dark:border-dark bg-white dark:bg-dark-secondary text-light dark:text-dark placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200;
+  }
+
+  .input-error {
+    @apply input border-red-500 focus:ring-red-500;
+  }
+
+  /* Labels */
+  .label {
+    @apply block text-sm font-medium text-light-secondary dark:text-dark-secondary mb-2;
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+  }
+
+  .badge-purple {
+    @apply badge bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300;
+  }
+
+  .badge-success {
+    @apply badge bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300;
+  }
+
+  .badge-warning {
+    @apply badge bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-300;
+  }
+
+  .badge-error {
+    @apply badge bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300;
+  }
+
+  .badge-info {
+    @apply badge bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300;
+  }
+
+  /* Containers */
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Dividers */
+  .divider {
+    @apply border-t border-light dark:border-dark my-4;
+  }
+
+  /* Links */
+  .link {
+    @apply text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 underline transition-colors duration-200;
+  }
+
+  /* Gradient Text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent;
+  }
+
+  /* Glass Effect */
+  .glass {
+    @apply bg-white/80 dark:bg-dark-card/80 backdrop-blur-lg border border-light/50 dark:border-dark/50;
+  }
+
+  /* Skeleton Loading */
+  .skeleton {
+    @apply animate-pulse bg-gray-200 dark:bg-dark-700 rounded;
+  }
+
+  /* Modal Overlay */
+  .modal-overlay {
+    @apply fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm z-40;
+  }
+
+  /* Network Badge Colors */
+  .network-ethereum {
+    @apply bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300;
+  }
+
+  .network-polygon {
+    @apply bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300;
+  }
+
+  .network-bsc {
+    @apply bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-300;
+  }
+
+  .network-arbitrum {
+    @apply bg-cyan-100 dark:bg-cyan-950 text-cyan-700 dark:text-cyan-300;
+  }
+
+  .network-optimism {
+    @apply bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300;
+  }
+
+  .network-base {
+    @apply bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300;
+  }
+}
+
+@layer utilities {
+  /* Custom Utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* AppKit Custom Styling */
+w3m-modal {
+  --w3m-accent: #9333ea !important;
+  --w3m-background: #ffffff !important;
+  --w3m-border-radius: 12px !important;
+}
+
+body.dark w3m-modal {
+  --w3m-background: #1e293b !important;
+  --w3m-color: #f1f5f9 !important;
+}
